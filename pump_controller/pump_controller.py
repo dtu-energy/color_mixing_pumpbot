@@ -11,7 +11,7 @@ import torch
 from .utils import read_logfile, write_to_logfile
 
 class PumpController:
-    def __init__(self, ser_port, baud_rate = 9600, cell_volume = 15.0, drain_time = 15.0):
+    def __init__(self, ser_port, baud_rate = 9600, cell_volume = 15.0, drain_time = 15.0, config_file = 'config.json'):
 
         """
         Initializes a PumpController instance with the specified serial port and baud rate.
@@ -22,6 +22,7 @@ class PumpController:
         - baud_rate (int): Baud rate at which to communicate over the serial port.
         - cell_volume (float): Maximum volume of test cell
         - drain_time (float): Time to run the drain pump in order to empty the cell
+        - config_file (str): Config File
 
         Returns:
         - None
@@ -35,9 +36,10 @@ class PumpController:
         self.ser = serial.Serial(ser_port, baud_rate)
         print(f"Serial port {ser_port} opened at baud rate {str(baud_rate)}")
         self.wait_for_arduino()
-        self.pump_config = self.get_config()
         self.cell_volume = cell_volume
         self.drain_time = drain_time
+        self.config_file = config_file
+        self.pump_config = self.get_config()
 
         self.target_mixture = [0.25, 0.25, 0.25, 0.25]
         self.target_color = [255, 255, 255]
@@ -250,10 +252,10 @@ class PumpController:
         """
             
         try:
-            with open('config.json', "r") as file:
+            with open(self.config_file, "r") as file:
                 pump_config = json.load(file)
         except FileNotFoundError:
-            raise FileNotFoundError("Error: 'config.json' file not found. Please make sure the file exists in the current directory.")
+            raise FileNotFoundError(f"Error: {self.config_file} file not found. Please make sure the file exists in the current directory.")
         
         return pump_config
     
