@@ -23,7 +23,10 @@ def write_to_logfile(mixture, measurement, target_mixture, target_measurement, l
         'target_mixture': [','.join(map(str, target_mixture))], 
         'target_measurement': [','.join(map(str, target_measurement))]
     }
+
     append_df = pd.DataFrame(new_row, index = [0])
+
+    
 
     # Convert the string representation of lists into actual lists
     for column in append_df.columns:

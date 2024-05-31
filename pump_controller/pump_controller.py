@@ -7,6 +7,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os 
 import datetime
+import torch
 from .utils import read_logfile, write_to_logfile
 
 class PumpController:
@@ -416,15 +417,13 @@ class PumpController:
         - Returns the RGB values obtained after the color mixing process.
         """
 
-        # If all coefficients are zero, set them to a small value to avoid division by zero
-        if col_list == [0, 0, 0, 0]:
-            min = 1e-5
-            col_list = [min, min, min, min]
-
         # Normalization
         col_list = np.array(col_list).reshape(4,) # Make sure that input list has np shape (4,)
         col_list[col_list < 0] = 0
-        col_list = np.divide(col_list, np.sum(col_list))
+        if col_list.sum() == 0:
+            col_list = [0.25, 0.25, 0.25, 0.25]
+        else:
+            col_list = np.divide(col_list, col_list.sum())
         
         log_col_list = col_list
         

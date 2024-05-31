@@ -2,6 +2,7 @@ import numpy as np
 import os
 import datetime
 import pandas as pd
+import torch
 from .utils import read_logfile, write_to_logfile
 
 class SilicoPumpController:
@@ -59,17 +60,16 @@ class SilicoPumpController:
                                   [0, 0, 255],
                                   [255, 255, 0]]
                                   )
-        
-        # If all coefficients are zero, set them to a small value to avoid division by zero
-        if col_list == [0, 0, 0, 0]:
-            min = 1e-5
-            col_list = [min, min, min, min]
+
 
         # Normalization
         col_list = np.array(col_list).reshape(4,) # Make sure that input list has np shape (4,)
         col_list[col_list < 0] = 0
-        col_list = np.divide(col_list, np.sum(col_list))
-        
+        if col_list.sum() == 0:
+            col_list = [0.25, 0.25, 0.25, 0.25]
+        else:
+            col_list = np.divide(col_list, col_list.sum())
+
         mixed_color = np.dot(col_list, true_coefficients)
         noise = np.random.normal(0, self.noise_std, mixed_color.shape)
         mixed_color_with_noise = np.clip(mixed_color + noise, 0, 255)

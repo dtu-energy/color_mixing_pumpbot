@@ -43,7 +43,10 @@ def visualize_rgb(mixture, rgb, pump_controller, target = 'pump_controller', sco
 
     fig, ax = plt.subplots()
 
-    mixture /= np.sum(mixture) / 1.0
+    if np.sum(mixture) == 0:
+        mixture = np.array([0.25, 0.25, 0.25, 0.25])
+    else:
+        mixture /= np.sum(mixture) / 1.0
 
     def add_score(background_color):
         if score != None:
