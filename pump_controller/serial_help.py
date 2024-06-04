@@ -45,6 +45,6 @@ def get_serial_port():
     ports = serial.tools.list_ports.comports()
 
     for port in ports:
-        if (port.description == "USB Serial") or (port.description == 'USB-Serial'):
+        if 'serial' in port.description.lower():
             return port.device
     raise Exception("ERROR: No USB Serial Port Found. Please try again or define port manually using list_serial_ports().")
