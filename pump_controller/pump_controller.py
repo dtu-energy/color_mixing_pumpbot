@@ -11,7 +11,7 @@ import torch
 from .utils import read_logfile, write_to_logfile
 
 class PumpController:
-    def __init__(self, ser_port, baud_rate = 9600, cell_volume = 15.0, drain_time = 15.0, config_file = 'config.json'):
+    def __init__(self, ser_port, baud_rate = 9600, cell_volume = 20.0, drain_time = 20.0, config_file = 'config.json'):
 
         """
         Initializes a PumpController instance with the specified serial port and baud rate.
