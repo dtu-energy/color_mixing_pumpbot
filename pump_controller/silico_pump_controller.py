@@ -12,14 +12,15 @@ class SilicoPumpController:
         Initializes a SilicoPumpController object.
 
         Parameters:
-        - noise_std (float): Standard deviation of noise to be added during color mixing.
+            noise_std (float): Standard deviation of noise to be added during color mixing.
 
         Returns:
-        - None
+            None
 
         Notes:
-        - Initializes attributes for noise standard deviation, target mixture, and target color.
-        - Creates a "silicologs" folder if it doesn't exist and a log file with the current date and time.
+            Initializes attributes for noise standard deviation, target mixture, and target color.
+
+            Creates a "silicologs" folder if it doesn't exist and a log file with the current date and time.
         """
 
         self.noise_std = noise_std
@@ -44,15 +45,16 @@ class SilicoPumpController:
         Mixes colors based on the provided color coefficients and adds noise.
 
         Parameters:
-        - col_list (list or numpy.ndarray): List of color coefficients for mixing.
-        - changing_target (bool, optional): If True, the mixing is considered as changing the target.
+            col_list (list or numpy.ndarray): List of color coefficients for mixing.
+            changing_target (bool, optional): If True, the mixing is considered as changing the target.
 
         Returns:
-        - numpy.ndarray: The mixed color with added noise.
+            numpy.ndarray: The mixed color with added noise.
 
         Notes:
-        - Uses true color coefficients to mix colors and adds noise with the specified standard deviation.
-        - Appends color mixture and measurement data to the log file unless changing_target is True.
+            - Uses true color coefficients to mix colors and adds noise with the specified standard deviation.
+
+            - Appends color mixture and measurement data to the log file unless changing_target is True.
         """
 
         true_coefficients = np.array([[255, 0, 0],
@@ -86,14 +88,15 @@ class SilicoPumpController:
         Changes the target mixture and computes the corresponding target color.
 
         Parameters:
-        - target_mixture (list or numpy.ndarray): New target color mixture.
+            target_mixture (list or numpy.ndarray): New target color mixture.
 
         Returns:
-        - numpy.ndarray: The new target color.
+            numpy.ndarray: The new target color.
 
         Notes:
-        - Updates target_mixture and target_color attributes.
-        - Prints information about the change.
+            - Updates target_mixture and target_color attributes.
+
+            - Prints information about the change.
         """
 
         self.target_mixture = target_mixture

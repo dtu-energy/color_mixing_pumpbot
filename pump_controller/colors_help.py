@@ -21,23 +21,28 @@ def visualize_rgb(mixture, rgb, pump_controller, target = 'pump_controller', sco
     Visualizes RGB data using a pie chart and circles.
 
     Parameters:
-    - mixture (numpy.ndarray): Array of 4 float values representing the color mixture.
-    - rgb (numpy.ndarray): Array of 3 float values representing the measured RGB color.
-    - pump_controller (object): An object containing information about the pump controller.
-    - target (str, list, np.ndarray, torch.Tensor, optional): Specifies the target color for comparison.
-      If 'pump_controller', it uses the target color from the pump_controller object.
-      If None, no target is visualized.
-      If a list, np.ndarray, or torch.Tensor, it is considered as a specific RGB target color.
-    - score (float, optional): A score associated with the visualization.
+        mixture (numpy.ndarray): Array of 4 float values representing the color mixture.
+        rgb (numpy.ndarray): Array of 3 float values representing the measured RGB color.
+        pump_controller (object): An object containing information about the pump controller.
+        target (str, list, np.ndarray, torch.Tensor, optional): Specifies the target color for comparison.
+            
+            - If 'pump_controller', it uses the target color from the pump_controller object.
+            
+            - If None, no target is visualized.
+            
+            - If a list, np.ndarray, or torch.Tensor, it is considered as a specific RGB target color.
+        score (float, optional): A score associated with the visualization.
 
     Returns:
-    - None
+        None
 
     Notes:
-    - The function plots a pie chart around a circle representing the color mixture and
-      a smaller circle representing the specified or pre-defined pump_controller target color.
-    - The function also adds an annotation with the provided score at the center of the plot.
-    - RGB values should be in the range [0, 255]. The function normalizes them to [0, 1] for plotting.
+        - The function plots a pie chart around a circle representing the color mixture and
+        a smaller circle representing the specified or pre-defined pump_controller target color.
+
+        - The function also adds an annotation with the provided score at the center of the plot.
+
+        - RGB values should be in the range [0, 255]. The function normalizes them to [0, 1] for plotting.
     """
 
 
@@ -107,20 +112,26 @@ def visualize_candidates(data_df):
     Visualizes candidate mixture data using pie charts for mixtures, measured colors, and target colors.
 
     Parameters:
-    - data_df (pd.DataFrame): A pandas DataFrame containing four columns:
-        - Column 0: List of mixtures.
-        - Column 1: List of measurement.
-        - Column 2: List of target measurements.
-        - Column 3: List of scores.
+        data_df (pd.DataFrame): A pandas DataFrame containing four columns:
+            
+            - Column 0: List of mixtures.
+
+            - Column 1: List of measurement.
+            
+            - Column 2: List of target measurements.
+            
+            - Column 3: List of scores.
 
     Returns:
-    - None
+        None
 
     Notes:
-    - The function creates a plot with pie charts for mixtures, measured colors, and target colors
-      for each candidate, organized in a horizontal layout, with the score on the vertical axis.
-    - Pie charts are drawn using the draw_pie helper function.
-    - RGB values for measured and target colors should be in the range [0, 255]. The function normalizes them to [0, 1] for plotting.
+        - The function creates a plot with pie charts for mixtures, measured colors, and target colors
+        for each candidate, organized in a horizontal layout, with the score on the vertical axis.
+
+        - Pie charts are drawn using the draw_pie helper function.
+        
+        - RGB values for measured and target colors should be in the range [0, 255]. The function normalizes them to [0, 1] for plotting.
     """
 
     def draw_pie(dist, 

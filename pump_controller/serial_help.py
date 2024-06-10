@@ -7,14 +7,15 @@ def list_serial_ports():
     Lists information about all available serial ports.
 
     Parameters:
-    - None
+        None
 
     Returns:
-    - None
+        None
 
     Notes:
-    - Uses the serial.tools.list_ports.comports() function to obtain a list of available serial ports.
-    - Prints information about each port, including device name, description, and hardware ID.
+        - Uses the serial.tools.list_ports.comports() function to obtain a list of available serial ports.
+
+        - Prints information about each port, including device name, description, and hardware ID.
     """
 
 
@@ -31,14 +32,14 @@ def get_serial_port():
     Returns the device name of a USB serial port.
 
     Parameters:
-    - None
+        None
 
     Returns:
-    - str: Device name of the USB serial port.
+        str: Device name of the USB serial port.
 
     Raises:
-    - Exception: Raised if no USB Serial Port is found. User is prompted to try again
-      or define the port manually using list_serial_ports().
+        Exception: Raised if no USB Serial Port is found. User is prompted to try again
+        or define the port manually using list_serial_ports().
     """
 
 

@@ -18,19 +18,21 @@ class PumpController:
         The cell volume and drain time can also be defined.
 
         Parameters:
-        - ser_port (str): Serial port used for communication.
-        - baud_rate (int): Baud rate at which to communicate over the serial port.
-        - cell_volume (float): Maximum volume of test cell
-        - drain_time (float): Time to run the drain pump in order to empty the cell
-        - config_file (str): Config File
+            ser_port (str): Serial port used for communication.
+            baud_rate (int): Baud rate at which to communicate over the serial port.
+            cell_volume (float): Maximum volume of test cell
+            drain_time (float): Time to run the drain pump in order to empty the cell
+            config_file (str): Config File
 
         Returns:
-        - None
+            None
 
         Notes:
-        - This method sets up a serial connection using the provided serial port and baud rate.
-        - It prints information about the opened serial port and waits for the Arduino to be ready.
-        - Retrieves the pump configuration from 'config.json' and stores it in the 'pump_config' attribute.
+            - This method sets up a serial connection using the provided serial port and baud rate.
+
+            - It prints information about the opened serial port and waits for the Arduino to be ready.
+            
+            - Retrieves the pump configuration from 'config.json' and stores it in the 'pump_config' attribute.
         """
 
         self.ser = serial.Serial(ser_port, baud_rate)
@@ -63,14 +65,15 @@ class PumpController:
         Sends a string message to the Arduino over the established serial connection.
 
         Parameters:
-        - send_str (str): The string message to be sent to the Arduino.
+            send_str (str): The string message to be sent to the Arduino.
 
         Returns:
-        - None
+            None
 
         Notes:
-        - The message is encoded as UTF-8 before being sent to the Arduino.
-        - The 'ser' attribute must represent a valid and open serial connection.
+            - The message is encoded as UTF-8 before being sent to the Arduino.
+            
+            - The 'ser' attribute must represent a valid and open serial connection.
         """
 
         self.ser.write(send_str.encode('utf-8'))
@@ -81,19 +84,22 @@ class PumpController:
         Receives data from the Arduino over the established serial connection.
 
         Parameters:
-        - timeout (float): Maximum time (in seconds) to wait for a response from the Arduino.
+            timeout (float): Maximum time (in seconds) to wait for a response from the Arduino.
 
         Returns:
-        - str: The received data from the Arduino.
+            str: The received data from the Arduino.
 
         Raises:
-        - TimeoutError: If the Arduino does not respond within the specified timeout.
+            TimeoutError: If the Arduino does not respond within the specified timeout.
 
         Notes:
-        - This method reads data from the Arduino until it encounters the end marker (ASCII 62).
-        - It decodes the received data as UTF-8 and returns the complete message.
-        - The method has a timeout mechanism to prevent waiting indefinitely for a response.
-        - If a timeout occurs, it raises a TimeoutError with a suggestion to reset the device.
+            - This method reads data from the Arduino until it encounters the end marker (ASCII 62).
+            
+            - It decodes the received data as UTF-8 and returns the complete message.
+            
+            - The method has a timeout mechanism to prevent waiting indefinitely for a response.
+            
+            - If a timeout occurs, it raises a TimeoutError with a suggestion to reset the device.
         """
         
         start_marker = 60
@@ -125,16 +131,19 @@ class PumpController:
         Waits for the Arduino to indicate readiness for communication.
 
         Parameters:
-        - None
+            None
 
         Returns:
-        - None
+            None
 
         Notes:
-        - This method continuously checks for the "Arduino is ready" message from the Arduino.
-        - It uses the `recv_from_arduino` method to receive data and prints the received message.
-        - The method waits until there is data available in the serial buffer (`in_waiting` > 0).
-        - The process continues until the Arduino signals readiness, as indicated by the message.
+            - This method continuously checks for the "Arduino is ready" message from the Arduino.
+            
+            - It uses the `recv_from_arduino` method to receive data and prints the received message.
+            
+            - The method waits until there is data available in the serial buffer (`in_waiting` > 0).
+            
+            - The process continues until the Arduino signals readiness, as indicated by the message.
         """
 
         msg = ""
@@ -150,15 +159,17 @@ class PumpController:
         Clears the serial buffer by reading and discarding any available data.
 
         Parameters:
-        - None
+            None
 
         Returns:
-        - None
+            None
 
         Notes:
-        - This method continuously reads and discards data from the serial buffer while it is not empty.
-        - It ensures that any residual or unwanted data in the buffer is removed.
-        - Useful to prepare the serial connection for new data transmission or reception.
+            - This method continuously reads and discards data from the serial buffer while it is not empty.
+            
+            - It ensures that any residual or unwanted data in the buffer is removed.
+            
+            - Useful to prepare the serial connection for new data transmission or reception.
         """
 
         while self.ser.in_waiting > 0:
@@ -170,16 +181,19 @@ class PumpController:
         Executes a command by sending a message to the Arduino and waiting for a response in return.
 
         Parameters:
-        - test_str (str): The test message to be sent to the Arduino.
+            test_str (str): The test message to be sent to the Arduino.
 
         Returns:
-        - None
+            None
 
         Notes:
-        - This method clears the serial buffer to ensure a clean slate for receiving data.
-        - It sends the test message to the Arduino using the `send_to_arduino` method.
-        - Waits for a response by continuously checking the serial buffer until data is available.
-        - Prints the sent test message, received reply, and a separator for clarity.
+            - This method clears the serial buffer to ensure a clean slate for receiving data.
+            
+            - It sends the test message to the Arduino using the `send_to_arduino` method.
+            
+            - Waits for a response by continuously checking the serial buffer until data is available.
+        
+            - Prints the sent test message, received reply, and a separator for clarity.
         """
 
         self.clear_serial_buffer()
@@ -210,15 +224,17 @@ class PumpController:
         Retrieves RGB values from the Arduino by waiting for a message containing 'RGB'.
 
         Parameters:
-        - None
+            None
 
         Returns:
-        - list: A list of RGB values [R, G, B] received from the Arduino.
+            list: A list of RGB values [R, G, B] received from the Arduino.
 
         Notes:
-        - This method continuously checks for a message containing 'RGB' from the Arduino.
-        - It uses the `recv_from_arduino` method to receive data and extracts RGB values from the message.
-        - The RGB values are expected to be in the format 'RGB:XX,YY,ZZ'.
+            - This method continuously checks for a message containing 'RGB' from the Arduino.
+            
+            - It uses the `recv_from_arduino` method to receive data and extracts RGB values from the message.
+            
+            - The RGB values are expected to be in the format 'RGB:XX,YY,ZZ'.
         """
 
         msg = ""
@@ -240,15 +256,17 @@ class PumpController:
         Reads and loads the pump configuration from a JSON file named 'config.json'.
 
         Parameters:
-        - None
+            None
 
         Returns:
-        - dict: A dictionary containing pump configuration data.
+            dict: A dictionary containing pump configuration data.
 
         Notes:
-        - This method reads the 'config.json' file, assumed to be in the current directory.
-        - The file is expected to contain a JSON-formatted configuration for pump settings.
-        - The configuration data is returned as a dictionary.
+            - This method reads the 'config.json' file, assumed to be in the current directory.
+            
+            - The file is expected to contain a JSON-formatted configuration for pump settings.
+            
+            - The configuration data is returned as a dictionary.
         """
             
         try:
@@ -265,15 +283,17 @@ class PumpController:
         Initiates a measurement and retrieves RGB values from the Arduino.
 
         Parameters:
-        - None
+            None
 
         Returns:
-        - list: A list of RGB values [R, G, B] obtained from the Arduino during the measurement.
+            list: A list of RGB values [R, G, B] obtained from the Arduino during the measurement.
 
         Notes:
-        - This method runs a measurement by sending the "<Meas>" message to the Arduino.
-        - It then retrieves RGB values using the `get_rgb` method.
-        - The returned RGB values represent the color measurement obtained from the Arduino.
+            - This method runs a measurement by sending the "<Meas>" message to the Arduino.
+            
+            - It then retrieves RGB values using the `get_rgb` method.
+            
+            - The returned RGB values represent the color measurement obtained from the Arduino.
         """
 
         self.run_test("<Meas>")
@@ -289,16 +309,18 @@ class PumpController:
         Initiates a pump purging (priming) process to fill the hose with liquid.
 
         Parameters:
-        - pump (str): The identifier for the pump to be purged.
-        - purge_time (float): The duration (in seconds) for which the pump will be purged.
+            pump (str): The identifier for the pump to be purged.
+            purge_time (float): The duration (in seconds) for which the pump will be purged.
 
         Returns:
-        - None
+            None
 
         Notes:
-        - This method retrieves the pump pin from the pump configuration.
-        - It purges the specified pump for the specified duration using the `run_test` method.
-        - The purging process is used to ensure accurate liquid pumping during subsequent operations.
+            - This method retrieves the pump pin from the pump configuration.
+            
+            - It purges the specified pump for the specified duration using the `run_test` method.
+            
+            - The purging process is used to ensure accurate liquid pumping during subsequent operations.
         """
 
         pump_pin = self.pump_config['pumps'][pump]['pin']
@@ -310,17 +332,20 @@ class PumpController:
         Initiates a pump operation to dispense a specified volume of liquid.
 
         Parameters:
-        - pump (str): The identifier for the pump to be run.
-        - volume (float): The volume of liquid to be dispensed by the pump.
+            pump (str): The identifier for the pump to be run.
+            volume (float): The volume of liquid to be dispensed by the pump.
 
         Returns:
-        - None
+            None
 
         Notes:
-        - This method retrieves the pump pin and calibration parameters from the pump configuration.
-        - Calculates the pump operation time based on the specified volume and calibration parameters.
-        - Operates the specified pump for the calculated pump operation time using the `run_test` method.
-        - If the specified volume or the calculated run time is 0 or less, the pump is not activated.
+            - This method retrieves the pump pin and calibration parameters from the pump configuration.
+            
+            - Calculates the pump operation time based on the specified volume and calibration parameters.
+            
+            - Operates the specified pump for the calculated pump operation time using the `run_test` method.
+    
+            - If the specified volume or the calculated run time is 0 or less, the pump is not activated.
         """
 
         pump_pin = self.pump_config['pumps'][pump]['pin']
@@ -337,14 +362,15 @@ class PumpController:
         Initiates a flush operation using the water pump to fill the test cell.
 
         Parameters:
-        - None
+            None
 
         Returns:
-        - None
+            None
 
         Notes:
-        - This method uses the `run_pump` method to initiate a flush operation using the water pump ('W').
-        - The specified cell volume determines the amount of water to be dispensed during the flush.
+            - This method uses the `run_pump` method to initiate a flush operation using the water pump ('W').
+            
+            - The specified cell volume determines the amount of water to be dispensed during the flush.
         """
 
         self.run_pump('W', self.cell_volume)
@@ -355,16 +381,19 @@ class PumpController:
         Initiates a drain operation using the drain pump to drain liquid for a specified duration.
 
         Parameters:
-        - drain_time (float): Amount of time to drain. If None, the time defined in instance definition is used.
-            If None, drain time is the pre-defined drain time
-            If float, the cell is drained for the provided amount of time
+            drain_time (float): Amount of time to drain. If None, the time defined in instance definition is used.
+                
+                - If None, drain time is the pre-defined drain time
+                
+                - If float, the cell is drained for the provided amount of time
 
         Returns:
-        - None
+            None
 
         Notes:
-        - This method uses the `purge_pump` method to initiate a drain operation using the drain pump ('D').
-        - The specified drain time determines how long the drain pump will be activated for liquid purging.
+            - This method uses the `purge_pump` method to initiate a drain operation using the drain pump ('D').
+            
+            - The specified drain time determines how long the drain pump will be activated for liquid purging.
         """
         if drain_time == None:
             self.purge_pump('D', self.drain_time)
@@ -379,14 +408,15 @@ class PumpController:
         Performs a system reset by draining, flushing, and draining again for new measurements.
 
         Parameters:
-        - None
+            None
 
         Returns:
-        - None
+            None
 
         Notes:
-        - This method uses the `drain` and `flush` methods to perform a system reset.
-        - Drains the system for the specified duration, flushes with water, and drains again.
+            - This method uses the `drain` and `flush` methods to perform a system reset.
+            
+            - Drains the system for the specified duration, flushes with water, and drains again.
         """
 
         self.drain()
@@ -404,19 +434,24 @@ class PumpController:
         Initiates a color mixing process by running pumps based on a specified color composition.
 
         Parameters:
-        - col_list (list): A list of color composition values [R, G, B, Y].
-        - changing_target (Bool): An indicator of the target being changed
+            col_list (list): A list of color composition values [R, G, B, Y].
+            changing_target (Bool): An indicator of the target being changed
 
         Returns:
-        - list: A list of RGB values [R, G, B] obtained after the color mixing process.
+            list: A list of RGB values [R, G, B] obtained after the color mixing process.
 
         Notes:
-        - This method ensures that the sum of color composition values adds up to 1.0.
-        - Adjusts the color composition values based on the maximum volume specified.
-        - Runs pumps for each color (R, G, B, Y) to achieve the desired color composition.
-        - Pauses for 2 seconds, measures the resulting color using the `measure` method, and resets the system.
-        - Logs the mixture and measurement, along with the target mixture and color.
-        - Returns the RGB values obtained after the color mixing process.
+            - This method ensures that the sum of color composition values adds up to 1.0.
+            
+            - Adjusts the color composition values based on the maximum volume specified.
+            
+            - Runs pumps for each color (R, G, B, Y) to achieve the desired color composition.
+            
+            - Pauses for 2 seconds, measures the resulting color using the `measure` method, and resets the system.
+            
+            - Logs the mixture and measurement, along with the target mixture and color.
+            
+            - Returns the RGB values obtained after the color mixing process.
         """
 
         # Normalization
@@ -458,13 +493,13 @@ class PumpController:
         Mixes a color using given mixture, measures it and stores it as target.
 
         Parameters:
-        - target_mixture (list): A list of color composition values [R, G, B, Y] for the target color mixture.
+            target_mixture (list): A list of color composition values [R, G, B, Y] for the target color mixture.
 
         Returns:
-        - list: A list of RGB values [R, G, B] obtained for the target color mixture.
+            list: A list of RGB values [R, G, B] obtained for the target color mixture.
 
         Notes:
-        - This method sets the target color mixture and measures it using the `mix_color` method.
+            - This method sets the target color mixture and measures it using the `mix_color` method.
         """
         self.target_mixture = target_mixture
         self.target_color = self.mix_color(target_mixture, changing_target = True)

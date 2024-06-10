@@ -2,6 +2,17 @@ import pandas as pd
 import ast
 
 def read_logfile(logfile):
+
+    """
+    Reads the logfile, converts lists in logfile to correct format and stores the data in a pd.DataFrame
+
+    Parameters:
+        logfile (str): Path to logfile
+
+    Returns:
+        pd.DataFrame: DataFrame with logfile data.
+    """
+
     df = pd.read_csv(logfile)
 
     # Convert the string representation of lists into actual lists
@@ -15,6 +26,21 @@ def read_logfile(logfile):
     return df
 
 def write_to_logfile(mixture, measurement, target_mixture, target_measurement, logfile):
+        
+    """
+    Takes the measurement and target data and logs this in the correct format.
+
+    Parameters:
+        mixture (list): The input mixture.
+        measurement (list): The measurement.
+        target_mixture (list): The target mixture.
+        target_measurement (list): The target measurement.
+        logfile (str): Path to logfile
+
+    Returns:
+        None
+    """
+    
     log_df = read_logfile(logfile)
     
     new_row = {
