@@ -6,13 +6,19 @@ import torch
 from .utils import read_logfile, write_to_logfile
 
 class SilicoPumpController:
-    def __init__(self, noise_std):
+    def __init__(self, noise_std, 
+                 true_coefficients = np.array([[255, 0, 0],
+                                                [0, 255, 0],
+                                                [0, 0, 255],
+                                                [255, 255, 0]])
+                ):
 
         """
         Initializes a SilicoPumpController object.
 
         Parameters:
             noise_std (float): Standard deviation of noise to be added during color mixing.
+            true_coefficients (numpy.ndarray, list, optional): True color coefficients for mixing.
 
         Returns:
             None
@@ -24,6 +30,7 @@ class SilicoPumpController:
         """
 
         self.noise_std = noise_std
+        self.true_coefficients = np.array(true_coefficients)
 
         self.target_mixture = [0.25, 0.25, 0.25, 0.25]
         self.target_color = [255, 255, 255] 
@@ -57,12 +64,6 @@ class SilicoPumpController:
             - Appends color mixture and measurement data to the log file unless changing_target is True.
         """
 
-        true_coefficients = np.array([[255, 0, 0],
-                                  [0, 255, 0],
-                                  [0, 0, 255],
-                                  [255, 255, 0]]
-                                  )
-
 
         # Normalization
         col_list = np.array(col_list).reshape(4,) # Make sure that input list has np shape (4,)
@@ -72,7 +73,7 @@ class SilicoPumpController:
         else:
             col_list = np.divide(col_list, col_list.sum())
 
-        mixed_color = np.dot(col_list, true_coefficients)
+        mixed_color = np.dot(col_list, self.true_coefficients)
         noise = np.random.normal(0, self.noise_std, mixed_color.shape)
         mixed_color_with_noise = np.clip(mixed_color + noise, 0, 255)
 
