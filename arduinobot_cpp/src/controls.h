@@ -9,6 +9,12 @@ LED ledStick;  // Define the Qwiic LED Stick
 // Define RGB Sensor
 Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X);
 
+// Define pH Pin
+#define PH_PIN A0
+float voltage,phValue,temperature = 25;
+float neutralVoltage = 2280, acidVoltage = 3060;
+
+
 void pinSetup() {
     // Define Pump PinModes
     pinMode(2, OUTPUT);
@@ -47,6 +53,14 @@ void colorMeasSetup() {
     tcs.setInterrupt(true); // Turn off sensor light
 }
 
+float readPH(float voltage, float temperature) {
+    float slope = (7.0 - 4.0)/((neutralVoltage-1500.0)/3.0 - (acidVoltage-1500.0)/3.0);
+    // two point: (_neutralVoltage,7.0),(_acidVoltage,4.0)
+    float intercept =  7.0 - slope * (neutralVoltage-1500.0)/3.0;
+
+    return slope * (voltage - 1500.0)/3.0 + intercept;
+}
+
 void stopPump(int pin) {
     // Deactivate a given pump
 
@@ -67,8 +81,8 @@ void runPump(int pin, float duration) {
 }
 
 void runMeasurement() {
-    ledStick.LEDOff();
-    ledStick.setLEDBrightness(31); // Set max brightness
+    ledStick.LEDOff(); // Reset LED stick
+    ledStick.setLEDBrightness(31); // Set LED stick to max brightness
 
     // Turn on bottom 6 leds to white
     ledStick.setLEDColor(3, 255, 255, 255);
@@ -81,7 +95,7 @@ void runMeasurement() {
 
     delay(500); 
 
-    // Take 3 measurements
+    // Take 3 color measurements
     float red = 0.0, green =  0.0, blue = 0.0;
     for (int i = 0; i < 3; i++) {
         tcs.getRGB(&red, &green, &blue);
@@ -108,6 +122,17 @@ void runMeasurement() {
     Serial.print(int(green));
     Serial.print(",");
     Serial.print(int(blue));
+    Serial.println(">");
+
+    // Measure PH value
+    voltage = analogRead(PH_PIN)/1024.0*5000; // Read the voltage
+    phValue = readPH(voltage, temperature);
+
+    // Send pH Data to PC
+    Serial.print("<PH:");
+    Serial.print(int(phValue));
+    //Serial.print(",");
+    //Serial.print(int(voltage));
     Serial.println(">");
 
 }

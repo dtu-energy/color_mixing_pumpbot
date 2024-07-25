@@ -246,6 +246,37 @@ class PumpController:
             rgb_vals = list(map(int, msg.split(':')[1].split(',')))
 
         return rgb_vals
+    
+    ### PH Sensor ### 
+    def get_ph(self):
+
+        """
+        Retrieves the pH value from the Arduino by waiting for a message containing 'PH'.
+
+        Parameters:
+            None
+
+        Returns:
+            float: A pH value received from the Arduino.
+
+        Notes:
+            - This method continuously checks for a message containing 'PH' from the Arduino.
+            
+            - It uses the `recv_from_arduino` method to receive data and extracts the pH value from the message.
+            
+            - The pH value is expected to be in the format 'PH:XX.X'.
+        """
+
+        msg = ""
+        while msg.find("PH") == -1:
+            while self.ser.in_waiting == 0:
+                pass
+
+            msg = self.recv_from_arduino()
+            pH_val = float(msg.split(':')[1])
+
+        return pH_val
+
        
     
     ### CONTROLS ### 
@@ -286,19 +317,20 @@ class PumpController:
             None
 
         Returns:
-            list: A list of RGB values [R, G, B] obtained from the Arduino during the measurement.
+            tuple (list, float): A tuple consisting of a list of RGB values [R, G, B], and a float pH value obtained from the Arduino during the measurement.
 
         Notes:
             - This method runs a measurement by sending the "<Meas>" message to the Arduino.
             
-            - It then retrieves RGB values using the `get_rgb` method.
+            - It then retrieves RGB values using the `get_rgb` and the pH value using the 'get_ph' methods.
             
-            - The returned RGB values represent the color measurement obtained from the Arduino.
+            - The returned RGB values represent the color measurement and the pH value represents the pH measurement obtained from the Arduino.
         """
 
         self.run_test("<Meas>")
         rgb_vals = self.get_rgb()
-        return rgb_vals
+        ph_val = self.get_ph()
+        return rgb_vals, ph_val
     
     
     # Single Control Functions
