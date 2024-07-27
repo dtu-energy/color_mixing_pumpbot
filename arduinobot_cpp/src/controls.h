@@ -130,7 +130,7 @@ void runMeasurement() {
 
     // Send pH Data to PC
     Serial.print("<PH:");
-    Serial.print(int(phValue));
+    Serial.print(float(phValue));
     //Serial.print(",");
     //Serial.print(int(voltage));
     Serial.println(">");
