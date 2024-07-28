@@ -46,6 +46,8 @@ class PumpController:
         self.target_mixture = [0.25, 0.25, 0.25, 0.25]
         self.target_color = [255, 255, 255]
 
+        self.target_ph = 7.0
+
         # Create "logs" folder if it doesn't exist
         if not os.path.exists('logs'):
             os.makedirs('logs')
@@ -53,7 +55,7 @@ class PumpController:
         # Create a log file with the current date and time and write column names
         now = datetime.datetime.now()
         self.log_file = f"logs/log_{now.strftime('%d%m%Y_%H%M%S')}.csv"
-        log_df = pd.DataFrame(columns=['mixture', 'measurement', 'target_mixture', 'target_measurement'])
+        log_df = pd.DataFrame(columns=['mixture', 'measurement', 'ph_measurement', 'target_mixture', 'target_measurement', 'target_ph_measurement'])
         log_df.to_csv(self.log_file, index=False)
 
 
@@ -515,7 +517,7 @@ class PumpController:
 
         if not changing_target:
             # Append color mixture and measurement data to the log file
-            write_to_logfile(log_col_list, rgb_measurement, self.target_mixture, self.target_color, self.log_file)
+            write_to_logfile(log_col_list, rgb_measurement[0], rgb_measurement[1], self.target_mixture, self.target_color, self.target_ph, self.log_file)
 
         return rgb_measurement
     
@@ -534,12 +536,12 @@ class PumpController:
             - This method sets the target color mixture and measures it using the `mix_color` method.
         """
         self.target_mixture = target_mixture
-        self.target_color = self.mix_color(target_mixture, changing_target = True)
+        self.target_color, self.target_ph = self.mix_color(target_mixture, changing_target = True)
         #self.target_color = self.mix_color(target_mixture)
 
-        print(f"Target changed to {self.target_color}. Created by {self.target_mixture}.")
+        print(f"Target changed to color {self.target_color} and pH {self.target_ph}. Created by {self.target_mixture}.")
 
-        return self.target_color
+        return self.target_color, self.target_ph
 
     
 
