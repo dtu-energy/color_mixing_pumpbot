@@ -35,5 +35,9 @@
             "b": -0.049233,
             "pin": 8
         }
+    },
+    "pH": {
+        "neutral_voltage": 2280,
+        "acid_voltage": 3060 
     }
 }

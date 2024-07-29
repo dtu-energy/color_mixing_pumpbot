@@ -12,7 +12,7 @@ Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_50MS, TCS3472
 // Define pH Pin
 #define PH_PIN A5
 float voltage,phValue,temperature = 25;
-float neutralVoltage = 2280, acidVoltage = 3060;
+// float neutralVoltage = 2280, acidVoltage = 3060;
 
 
 void pinSetup() {
@@ -53,13 +53,13 @@ void colorMeasSetup() {
     tcs.setInterrupt(true); // Turn off sensor light
 }
 
-float readPH(float voltage, float temperature) {
-    float slope = (7.0 - 4.0)/((neutralVoltage-1500.0)/3.0 - (acidVoltage-1500.0)/3.0);
-    // two point: (_neutralVoltage,7.0),(_acidVoltage,4.0)
-    float intercept =  7.0 - slope * (neutralVoltage-1500.0)/3.0;
+// float readPH(float voltage, float temperature) {
+//     float slope = (7.0 - 4.0)/((neutralVoltage-1500.0)/3.0 - (acidVoltage-1500.0)/3.0);
+//     // two point: (_neutralVoltage,7.0),(_acidVoltage,4.0)
+//     float intercept =  7.0 - slope * (neutralVoltage-1500.0)/3.0;
 
-    return slope * (voltage - 1500.0)/3.0 + intercept;
-}
+//     return slope * (voltage - 1500.0)/3.0 + intercept;
+// }
 
 void stopPump(int pin) {
     // Deactivate a given pump
@@ -126,13 +126,11 @@ void runMeasurement() {
 
     // Measure PH value
     voltage = analogRead(PH_PIN)/1024.0*5000; // Read the voltage
-    phValue = readPH(voltage, temperature);
+    // phValue = readPH(voltage, temperature);
 
     // Send pH Data to PC
     Serial.print("<PH:");
-    Serial.print(float(phValue));
-    //Serial.print(",");
-    //Serial.print(int(voltage));
+    Serial.print(float(voltage));
     Serial.println(">");
 
 }

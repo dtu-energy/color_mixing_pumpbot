@@ -269,13 +269,22 @@ class PumpController:
             - The pH value is expected to be in the format 'PH:XX.X'.
         """
 
+        # Config values for pH sensor calibration
+        neutral_voltage = self.pump_config['pH']['neutral_voltage']
+        acid_voltage = self.pump_config['pH']['acid_voltage']
+        
         msg = ""
         while msg.find("PH") == -1:
             while self.ser.in_waiting == 0:
                 pass
 
             msg = self.recv_from_arduino()
-            pH_val = float(msg.split(':')[1])
+            pH_voltage = float(msg.split(':')[1])
+
+        # Calculate pH value from voltage and config
+        slope = (7.0 - 4.0)/((neutral_voltage-1500.0)/3.0 - (acid_voltage-1500.0)/3.0)
+        intercept = 7.0 - slope * (neutral_voltage-1500.0)/3.0
+        pH_val = slope * (pH_voltage - 1500.0)/3.0 + intercept
 
         return pH_val
 
