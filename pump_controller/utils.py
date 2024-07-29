@@ -73,7 +73,6 @@ def write_to_logfile(mixture, measurement, ph_measurement, target_mixture, targe
 
     # Convert the lists of strings into lists of floats
     for column in append_df.columns:
-        print(column)
         if column not in ['ph_measurement', 'target_ph']:
             append_df[column] = append_df[column].apply(lambda x: [float(i) for i in x])
         else:
