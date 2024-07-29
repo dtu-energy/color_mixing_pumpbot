@@ -10,7 +10,7 @@ LED ledStick;  // Define the Qwiic LED Stick
 Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X);
 
 // Define pH Pin
-#define PH_PIN A0
+#define PH_PIN A5
 float voltage,phValue,temperature = 25;
 float neutralVoltage = 2280, acidVoltage = 3060;
 
