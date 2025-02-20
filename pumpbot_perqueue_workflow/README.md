@@ -4,6 +4,6 @@ Example PerQueue workflow to control equipment, in this case a color mixing robo
 
 ## Requirements
 
-* pump_controller (https://gitlab.com/auto_lab/47332-student-excercises)
-* odyssey (https://gitlab.com/pwvbutler/odyssey)
+* pump_controller
+* odyssey (https://gitlab.com/dtu-energy/Odyssey)
 * perqueue (https://gitlab.com/asm-dtu/perqueue)
