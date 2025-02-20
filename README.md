@@ -37,14 +37,25 @@ pumpbot = PumpController(
   )
 ```
 
-Colours can then be mixed and the resulting RGB value determined by
+To measure the current RGB value of the cell (i.e. to measure a target mixed by hand)
+```
+target = pumpbot.measure()
+```
+
+Alternatively, a target color can be created by providing a mixture
+```
+mixture = [0.1, 0.5, 0.1, 0.5] # ratio of Red, Green, Blue, Yellow
+pumpbot.change_target(mixture)
+```
+
+Colors can then be mixed and the resulting RGB value determined as follows. This can be implemented in an optimization loop to optimize to the target color
 
 ```
 mixture = [0.2, 0.2, 0.5, 0.5] # ratio of Red, Green, Blue, Yellow
 measured_color = pumpbot.mix_color(mixture) 
 ```
 
-The in-silico version has the same function handles but is initialised as
+The in-silico digital twin has the same basic function handles for mixing colors but is initialised as
 
 ```
 silicobot = SilicoPumpController(noise_std = 3)
