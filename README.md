@@ -1,1 +1,2 @@
-Repository for students to access course material for Course 47332 at DTU.
+Controller code for the colour mixing platform developed by K. Gambhir, L. Nyeland, and R. Ziskason at DTU Energy
+
