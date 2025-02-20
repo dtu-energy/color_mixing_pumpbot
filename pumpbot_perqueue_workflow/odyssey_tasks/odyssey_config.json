@@ -1,0 +1,36 @@
+{
+    "params": [
+        {
+            "name": "red_ratio",
+            "envelope": [1e-5, 1.0]
+        },
+        {
+            "name": "green_ratio",
+            "envelope": [1e-5, 1.0]
+        },
+        {
+            "name": "blue_ratio",
+            "envelope": [1e-5, 1.0]
+        },
+        {
+            "name": "yellow_ratio",
+            "envelope": [1e-5, 1.0]
+        }
+    ],
+    "objectives": [
+        {
+            "name": "score",
+            "maneuver": "descend"
+        }
+    ],
+    "mission": {
+        "name": "color_mixing_opt",
+        "log_data": false
+    },
+    "navigator": {
+        "n_init": 5
+    }
+}
+
+
+
